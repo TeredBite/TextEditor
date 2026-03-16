@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TextEditor.FileBrowserPage"
+             Title="File Browser"
+             BackgroundColor="#f5f5f5">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        <!-- Header -->
+        <Grid Grid.Row="0" BackgroundColor="#2c3e50" Padding="15,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Grid.Column="0" Text="📁" FontSize="24" TextColor="White" VerticalOptions="Center"/>
+            <Label Grid.Column="1" Text="File Browser" FontSize="18" TextColor="White" 
+                   VerticalOptions="Center" Margin="10,0"/>
+            <Button Grid.Column="2" Text="Close" Clicked="OnCloseClicked"
+                    BackgroundColor="#e74c3c" TextColor="White" CornerRadius="5"/>
+        </Grid>
+
+        <!-- Navigation Bar -->
+        <Grid Grid.Row="1" BackgroundColor="#ecf0f1" Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" Text="⬅ Back" Clicked="OnBackClicked"
+                    BackgroundColor="#3498db" TextColor="White" CornerRadius="5" Margin="0,0,5,0"/>
+            <Button Grid.Column="1" Text="🏠 Home" Clicked="OnHomeClicked"
+                    BackgroundColor="#95a5a6" TextColor="White" CornerRadius="5" Margin="0,0,10,0"/>
+            <Entry Grid.Column="2" x:Name="PathEntry" Placeholder="Current path..."
+                   FontSize="14" BackgroundColor="White" TextChanged="OnPathChanged"/>
+            <Button Grid.Column="3" Text="Go" Clicked="OnGoClicked"
+                    BackgroundColor="#27ae60" TextColor="White" CornerRadius="5" Margin="5,0,0,0"/>
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Quick Access Panel -->
+            <Frame Grid.Column="0" BorderColor="#bdc3c7" BackgroundColor="White" 
+                   CornerRadius="0" Padding="0" Margin="10">
+                <ScrollView>
+                    <VerticalStackLayout Spacing="0">
+                        <Label Text="Quick Access" FontAttributes="Bold" 
+                               FontSize="14" TextColor="#2c3e50" Padding="15,10" BackgroundColor="#ecf0f1"/>
+                        
+                        <Button Text="📁 Desktop" Clicked="OnDesktopClicked"
+                                BackgroundColor="Transparent" TextColor="#2c3e50"
+                                HorizontalOptions="Start" FontSize="13"/>
+                        <Button Text="📁 Documents" Clicked="OnDocumentsClicked"
+                                BackgroundColor="Transparent" TextColor="#2c3e50"
+                                HorizontalOptions="Start" FontSize="13"/>
+                        <Button Text="📁 Downloads" Clicked="OnDownloadsClicked"
+                                BackgroundColor="Transparent" TextColor="#2c3e50"
+                                HorizontalOptions="Start" FontSize="13"/>
+                        <Button Text="📁 Pictures" Clicked="OnPicturesClicked"
+                                BackgroundColor="Transparent" TextColor="#2c3e50"
+                                HorizontalOptions="Start" FontSize="13"/>
+                        <Button Text="📁 Music" Clicked="OnMusicClicked"
+                                BackgroundColor="Transparent" TextColor="#2c3e50"
+                                HorizontalOptions="Start" FontSize="13"/>
+                        <Button Text="📁 Videos" Clicked="OnVideosClicked"
+                                BackgroundColor="Transparent" TextColor="#2c3e50"
+                                HorizontalOptions="Start" FontSize="13"/>
+                        
+                        <BoxView Height="1" Color="#bdc3c7" Margin="10,5"/>
+                        
+                        <Label Text="Drives" FontAttributes="Bold" 
+                               FontSize="14" TextColor="#2c3e50" Padding="15,10" BackgroundColor="#ecf0f1"/>
+                        
+                        <Button Text="💿 C:" Clicked="OnDriveCClicked"
+                                BackgroundColor="Transparent" TextColor="#2c3e50"
+                                HorizontalOptions="Start" FontSize="13"/>
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Frame>
+
+            <!-- File List -->
+            <Frame Grid.Column="1" BorderColor="#bdc3c7" BackgroundColor="White" 
+                   CornerRadius="0" Padding="0" Margin="0,10,10,10">
+                <Grid RowDefinitions="Auto,*">
+                    <!-- File List Header -->
+                    <Grid Grid.Row="0" BackgroundColor="#34495e" Padding="10,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="Name" TextColor="White" FontAttributes="Bold" FontSize="12"/>
+                        <Label Grid.Column="1" Text="Modified" TextColor="White" FontAttributes="Bold" FontSize="12"/>
+                        <Label Grid.Column="2" Text="Type" TextColor="White" FontAttributes="Bold" FontSize="12"/>
+                        <Label Grid.Column="3" Text="Size" TextColor="White" FontAttributes="Bold" FontSize="12"/>
+                    </Grid>
+                    
+                    <!-- File Items -->
+                    <CollectionView Grid.Row="1" x:Name="FileListView" 
+                                    SelectionMode="Single"
+                                    SelectionChanged="OnFileSelected">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10,8" ColumnDefinitions="Auto,*,120,100,80">
+                                    <Label Grid.Column="0" Text="{Binding Icon}" FontSize="16" Margin="0,0,8,0"/>
+                                    <Label Grid.Column="1" Text="{Binding Name}" TextColor="#2c3e50" FontSize="13"/>
+                                    <Label Grid.Column="2" Text="{Binding ModifiedDate}" TextColor="#7f8c8d" FontSize="11"/>
+                                    <Label Grid.Column="3" Text="{Binding Type}" TextColor="#7f8c8d" FontSize="11"/>
+                                    <Label Grid.Column="4" Text="{Binding Size}" TextColor="#7f8c8d" FontSize="11"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </Frame>
+        </Grid>
+
+        <!-- Bottom Toolbar -->
+        <Grid Grid.Row="3" BackgroundColor="#2c3e50" Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" Text="➕ New Folder" Clicked="OnNewFolderClicked"
+                    BackgroundColor="#27ae60" TextColor="White" CornerRadius="5" Margin="0,0,5,0"/>
+            <Button Grid.Column="1" Text="📄 New File" Clicked="OnNewFileClicked"
+                    BackgroundColor="#3498db" TextColor="White" CornerRadius="5" Margin="0,0,5,0"/>
+            <Button Grid.Column="2" Text="🗑️ Delete" Clicked="OnDeleteClicked"
+                    BackgroundColor="#e74c3c" TextColor="White" CornerRadius="5" Margin="0,0,5,0"/>
+            <Button Grid.Column="3" Text="✏️ Rename" Clicked="OnRenameClicked"
+                    BackgroundColor="#f39c12" TextColor="White" CornerRadius="5" Margin="0,0,5,0"/>
+            <Label Grid.Column="5" x:Name="StatusLabel" Text="Ready" TextColor="#95a5a6" 
+                   FontSize="12" VerticalOptions="Center"/>
+        </Grid>
+    </Grid>
+
+</ContentPage>

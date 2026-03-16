@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TextEditor.MainPage"
+             Title="Text Editor"
+             BackgroundColor="#f5f5f5">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        <!-- Menu Bar - File Only -->
+        <Grid Grid.Row="0" BackgroundColor="#2c3e50" Padding="10,5">
+            <HorizontalStackLayout Spacing="25">
+                <Label Text="File" TextColor="White" FontSize="14">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFileMenuTapped"/>
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <!-- Main Toolbar - Save/Load and Font only -->
+        <Grid Grid.Row="1" BackgroundColor="#ecf0f1" Padding="10">
+            <ScrollView Orientation="Horizontal">
+                <HorizontalStackLayout Spacing="12" Padding="5,0">
+
+                <!-- File Operations Group -->
+                <Frame BorderColor="#bdc3c7" BackgroundColor="White" Padding="8" CornerRadius="10" HasShadow="True">
+                    <HorizontalStackLayout Spacing="8">
+                        <Button Text="Load" Clicked="OnOpenClicked"
+                                BackgroundColor="#3498db" TextColor="White"
+                                FontSize="12" WidthRequest="70" HeightRequest="42" CornerRadius="8"/>
+                        <Button Text="Save" Clicked="OnSaveClicked"
+                                BackgroundColor="#27ae60" TextColor="White"
+                                FontSize="12" WidthRequest="70" HeightRequest="42" CornerRadius="8"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- Font Group -->
+                <Frame BorderColor="#bdc3c7" BackgroundColor="White" Padding="8" CornerRadius="10" HasShadow="True">
+                    <HorizontalStackLayout Spacing="8">
+                        <Picker x:Name="FontPicker" Title="Font" WidthRequest="150"
+                                SelectedIndexChanged="OnFontChanged"
+                                FontSize="13" TextColor="#2c3e50"
+                                BackgroundColor="#ecf0f1" TitleColor="#7f8c8d"
+                                HeightRequest="40">
+                            <Picker.Items>
+                                <x:String>Arial</x:String>
+                                <x:String>Times New Roman</x:String>
+                                <x:String>Calibri</x:String>
+                                <x:String>Georgia</x:String>
+                                <x:String>Verdana</x:String>
+                                <x:String>Courier New</x:String>
+                                <x:String>Consolas</x:String>
+                            </Picker.Items>
+                        </Picker>
+                        <Picker x:Name="FontSizePicker" Title="Size" WidthRequest="70"
+                                SelectedIndexChanged="OnFontSizeChanged"
+                                FontSize="13" TextColor="#2c3e50"
+                                BackgroundColor="#ecf0f1" TitleColor="#7f8c8d"
+                                HeightRequest="40">
+                            <Picker.Items>
+                                <x:String>8</x:String>
+                                <x:String>9</x:String>
+                                <x:String>10</x:String>
+                                <x:String>11</x:String>
+                                <x:String>12</x:String>
+                                <x:String>14</x:String>
+                                <x:String>16</x:String>
+                                <x:String>18</x:String>
+                                <x:String>20</x:String>
+                                <x:String>24</x:String>
+                                <x:String>28</x:String>
+                                <x:String>32</x:String>
+                                <x:String>36</x:String>
+                                <x:String>48</x:String>
+                                <x:String>72</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- Formatting Group -->
+                <Frame BorderColor="#bdc3c7" BackgroundColor="White" Padding="8" CornerRadius="10" HasShadow="True">
+                    <HorizontalStackLayout Spacing="6">
+                        <Button x:Name="BoldButton" Text="B" Clicked="OnBoldClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontAttributes="Bold" FontSize="18"
+                                WidthRequest="42" HeightRequest="42" CornerRadius="8"/>
+                        <Button x:Name="ItalicButton" Text="I" Clicked="OnItalicClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontAttributes="Italic" FontSize="18"
+                                WidthRequest="42" HeightRequest="42" CornerRadius="8"/>
+                        <Button x:Name="UnderlineButton" Text="U" Clicked="OnUnderlineClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="16" WidthRequest="42" HeightRequest="42" CornerRadius="8"/>
+                        <Button x:Name="StrikethroughButton" Text="S" Clicked="OnStrikethroughClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="16" WidthRequest="42" HeightRequest="42" CornerRadius="8"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- Scripts Group -->
+                <Frame BorderColor="#bdc3c7" BackgroundColor="White" Padding="8" CornerRadius="10" HasShadow="True">
+                    <HorizontalStackLayout Spacing="6">
+                        <Button Text="x₂" Clicked="OnSubscriptClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="15" WidthRequest="42" HeightRequest="42" CornerRadius="8"/>
+                        <Button Text="x²" Clicked="OnSuperscriptClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="15" WidthRequest="42" HeightRequest="42" CornerRadius="8"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- Alignment Group -->
+                <Frame BorderColor="#bdc3c7" BackgroundColor="White" Padding="8" CornerRadius="10" HasShadow="True">
+                    <HorizontalStackLayout Spacing="6">
+                        <Button Text="Left" Clicked="OnAlignLeftClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="12" WidthRequest="55" HeightRequest="42" CornerRadius="8"/>
+                        <Button Text="Center" Clicked="OnAlignCenterClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="12" WidthRequest="55" HeightRequest="42" CornerRadius="8"/>
+                        <Button Text="Right" Clicked="OnAlignRightClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="12" WidthRequest="55" HeightRequest="42" CornerRadius="8"/>
+                        <Button Text="Justify" Clicked="OnAlignJustifyClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="12" WidthRequest="65" HeightRequest="42" CornerRadius="8"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- Lists Group -->
+                <Frame BorderColor="#bdc3c7" BackgroundColor="White" Padding="8" CornerRadius="10" HasShadow="True">
+                    <HorizontalStackLayout Spacing="6">
+                        <Button Text="• List" Clicked="OnBulletListClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="12" WidthRequest="65" HeightRequest="42" CornerRadius="8"/>
+                        <Button Text="1. List" Clicked="OnNumberListClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="12" WidthRequest="70" HeightRequest="42" CornerRadius="8"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                <!-- Color Group -->
+                <Frame BorderColor="#bdc3c7" BackgroundColor="White" Padding="8" CornerRadius="10" HasShadow="True">
+                    <HorizontalStackLayout Spacing="8">
+                        <Button Text="Color" Clicked="OnTextColorClicked"
+                                BackgroundColor="#ecf0f1" TextColor="#2c3e50"
+                                FontSize="12" WidthRequest="65" HeightRequest="42" CornerRadius="8"/>
+                        <Button Text="Highlight" Clicked="OnHighlightClicked"
+                                BackgroundColor="#f1c40f" TextColor="#2c3e50"
+                                FontSize="12" WidthRequest="80" HeightRequest="42" CornerRadius="8"/>
+                    </HorizontalStackLayout>
+                </Frame>
+
+                </HorizontalStackLayout>
+            </ScrollView>
+        </Grid>
+
+        <!-- Editor Area -->
+        <Grid Grid.Row="2" Padding="15">
+            <Frame BorderColor="#bdc3c7" BackgroundColor="White" 
+                   CornerRadius="12" Padding="0" HasShadow="True">
+                <WebView x:Name="EditorWebView"
+                         Navigating="OnWebViewNavigating"
+                         Navigated="OnWebViewNavigated"/>
+            </Frame>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Grid Grid.Row="3" BackgroundColor="#2c3e50" Padding="10,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Grid.Column="0" x:Name="StatusLabel" 
+                   Text="Ready" TextColor="#ecf0f1" FontSize="11"/>
+            
+            <Label Grid.Column="2" x:Name="WordCountLabel" 
+                   Text="0 words" TextColor="#95a5a6" FontSize="11"/>
+            
+            <BoxView Grid.Column="3" Width="1" Height="15" 
+                     Color="#7f8c8d" Margin="10,0"/>
+            
+            <Label Grid.Column="4" x:Name="CharCountLabel" 
+                   Text="0 characters" TextColor="#95a5a6" FontSize="11"/>
+        </Grid>
+    </Grid>
+
+</ContentPage>
