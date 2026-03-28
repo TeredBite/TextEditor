@@ -25,12 +25,12 @@
                 <!-- File Operations Group -->
                 <Frame BorderColor="#bdc3c7" BackgroundColor="White" Padding="8" CornerRadius="10" HasShadow="True">
                     <HorizontalStackLayout Spacing="8">
-                        <Button Text="Load" Clicked="OnOpenClicked"
+                        <Button Text="Загрузить" Clicked="OnOpenClicked"
                                 BackgroundColor="#3498db" TextColor="White"
-                                FontSize="12" WidthRequest="70" HeightRequest="42" CornerRadius="8"/>
-                        <Button Text="Save" Clicked="OnSaveClicked"
+                                FontSize="10" WidthRequest="70" HeightRequest="42" CornerRadius="8"/>
+                        <Button Text="Сохранить" Clicked="OnSaveClicked"
                                 BackgroundColor="#27ae60" TextColor="White"
-                                FontSize="12" WidthRequest="70" HeightRequest="42" CornerRadius="8"/>
+                                FontSize="10" WidthRequest="70" HeightRequest="42" CornerRadius="8"/>
                     </HorizontalStackLayout>
                 </Frame>
 
